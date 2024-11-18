@@ -42,7 +42,9 @@ def viz(output_folder="visualizations"):
 
     # Boxplot: Total servings by type
     plt.figure(figsize=(15, 8))
-    query.select("beer_servings", "spirit_servings", "wine_servings").toPandas().boxplot()
+    query.select("beer_servings", 
+                 "spirit_servings", 
+                 "wine_servings").toPandas().boxplot()
     plt.title("Distribution of Alcohol Servings by Type")
     plt.ylabel("Servings per Capita")
     plt.suptitle("")
