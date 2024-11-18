@@ -4,7 +4,7 @@ Query and Visualization for Drinks Dataset
 
 from pyspark.sql import SparkSession
 import matplotlib.pyplot as plt
-
+import os
 
 def query_transform():
     """
@@ -25,10 +25,13 @@ def query_transform():
     return query_result
 
 
-def viz():
+def viz(output_folder="visualizations"):
     """
-    Create visualizations for the drinks dataset.
+    Create and save visualizations for the drinks dataset.
     """
+    # Ensure the output folder exists
+    os.makedirs(output_folder, exist_ok=True)
+
     query = query_transform()
     count = query.count()
     if count > 0:
@@ -39,29 +42,34 @@ def viz():
 
     # Boxplot: Total servings by type
     plt.figure(figsize=(15, 8))
-    query.select("beer_servings", 
-                 "spirit_servings", 
-                 "wine_servings").toPandas().boxplot()
+    query.select("beer_servings", "spirit_servings", "wine_servings").toPandas().boxplot()
     plt.title("Distribution of Alcohol Servings by Type")
     plt.ylabel("Servings per Capita")
     plt.suptitle("")
     plt.tight_layout()
-    plt.show()
+    boxplot_path = os.path.join(output_folder, "boxplot_servings.png")
+    plt.savefig(boxplot_path)
+    print(f"Boxplot saved to {boxplot_path}")
+    plt.close()
 
     # Bar Chart: Total Litres of Alcohol by Country (Top 10)
     top_countries = query.limit(10).toPandas()
     plt.figure(figsize=(12, 6))
-    plt.bar(top_countries["country"], 
-            top_countries["total_litres_of_pure_alcohol"], 
-            color="orange")
+    plt.bar(
+        top_countries["country"], 
+        top_countries["total_litres_of_pure_alcohol"], 
+        color="orange"
+    )
     plt.xlabel("Country")
     plt.ylabel("Total Litres of Pure Alcohol")
     plt.title("Top 10 Countries by Total Alcohol Consumption")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
-    plt.show()
+    bar_chart_path = os.path.join(output_folder, "bar_chart_top_countries.png")
+    plt.savefig(bar_chart_path)
+    print(f"Bar chart saved to {bar_chart_path}")
+    plt.close()
 
 
 if __name__ == "__main__":
-    query_transform()
     viz()
