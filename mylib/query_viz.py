@@ -1,10 +1,11 @@
 """
-Query and Visualization for Drinks Dataset
+Query and Visualization for Drinks Dataset in Databricks
 """
 
 from pyspark.sql import SparkSession
 import matplotlib.pyplot as plt
 import os
+
 
 def query_transform():
     """
@@ -25,9 +26,9 @@ def query_transform():
     return query_result
 
 
-def viz(output_folder = "mylib/visualizations"):
+def viz(output_folder="/dbfs/FileStore/visualizations"):
     """
-    Create and save visualizations for the drinks dataset.
+    Create and save visualizations for the drinks dataset in Databricks.
     """
     # Ensure the output folder exists
     os.makedirs(output_folder, exist_ok=True)
@@ -40,14 +41,11 @@ def viz(output_folder = "mylib/visualizations"):
         print("No data available. Please investigate.")
         return
 
-    # Boxplot: Total servings by type
-    plt.figure(figsize=(15, 8))
-    query.select("beer_servings", 
-                 "spirit_servings", 
-                 "wine_servings").toPandas().boxplot()
+    # Boxplot: Distribution of Alcohol Servings by Type (Aggregate)
+    plt.figure(figsize=(10, 6))
+    query.select("beer_servings", "spirit_servings", "wine_servings").toPandas().boxplot()
     plt.title("Distribution of Alcohol Servings by Type")
     plt.ylabel("Servings per Capita")
-    plt.suptitle("")
     plt.tight_layout()
     boxplot_path = os.path.join(output_folder, "boxplot_servings.png")
     plt.savefig(boxplot_path)
@@ -58,9 +56,9 @@ def viz(output_folder = "mylib/visualizations"):
     top_countries = query.limit(10).toPandas()
     plt.figure(figsize=(12, 6))
     plt.bar(
-        top_countries["country"], 
-        top_countries["total_litres_of_pure_alcohol"], 
-        color="orange"
+        top_countries["country"],
+        top_countries["total_litres_of_pure_alcohol"],
+        color="orange",
     )
     plt.xlabel("Country")
     plt.ylabel("Total Litres of Pure Alcohol")
@@ -72,6 +70,10 @@ def viz(output_folder = "mylib/visualizations"):
     print(f"Bar chart saved to {bar_chart_path}")
     plt.close()
 
+    return [boxplot_path, bar_chart_path]
+
 
 if __name__ == "__main__":
-    viz()
+    image_paths = viz()
+    for path in image_paths:
+        print(f"Visualization available at: {path}")

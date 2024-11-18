@@ -29,14 +29,3 @@ jobs:
         run: make job
       - name: deploy
         run: make deploy
-      - name: Debug Visualizations Folder
-        run: |
-          echo "Listing contents of mylib/visualizations:"
-          ls -R mylib/visualizations || echo "No files found in mylib/visualizations/"
-      - name: Commit and Push Visualizations
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions"
-          git add mylib/visualizations/
-          git commit -m "Add generated visualizations"
-          git push
