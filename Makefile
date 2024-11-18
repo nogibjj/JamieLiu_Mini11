@@ -27,8 +27,8 @@ job:
 	python run_job.py
 
 generate_and_push:
-	# Run the Python script to generate visualizations (e.g., query_viz.py)
-	python query_viz.py || { echo "Error: query_viz.py failed. Exiting."; exit 1; }
+	# Run the Python script to generate visualizations
+	python mylib/query_viz.py || { echo "Error: mylib/query_viz.py failed. Exiting."; exit 1; }
 
 	# Check if any changes were made to the visualizations folder or other files
 	@if [ -n "$$(git status --porcelain)" ]; then \
