@@ -43,7 +43,9 @@ def viz(output_folder="/dbfs/FileStore/visualizations"):
 
     # Boxplot: Distribution of Alcohol Servings by Type (Aggregate)
     plt.figure(figsize=(10, 6))
-    query.select("beer_servings", "spirit_servings", "wine_servings").toPandas().boxplot()
+    query.select("beer_servings", 
+                 "spirit_servings", 
+                 "wine_servings").toPandas().boxplot()
     plt.title("Distribution of Alcohol Servings by Type")
     plt.ylabel("Servings per Capita")
     plt.tight_layout()
