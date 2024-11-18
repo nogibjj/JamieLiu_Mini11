@@ -25,7 +25,7 @@ def query_transform():
     return query_result
 
 
-def viz(output_folder="visualizations"):
+def viz(output_folder="./visualizations"):
     """
     Create and save visualizations for the drinks dataset.
     """
