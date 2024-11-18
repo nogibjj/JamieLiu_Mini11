@@ -29,5 +29,8 @@ jobs:
         run: make job
       - name: deploy
         run: make deploy
-      - name: generate_and_push
-        run: make generate_and_push
+      - name: Upload Visualizations as Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: visualizations
+          path: visualizations/
