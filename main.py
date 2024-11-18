@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # Print the current working directory
     current_directory = os.getcwd()
     print(f"Current Directory: {current_directory}")
-    
+
     # Step 1: Extract dataset and save to DBFS
     print("Starting data extraction...")
     extract()

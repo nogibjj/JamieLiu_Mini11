@@ -39,7 +39,9 @@ def viz():
 
     # Boxplot: Total servings by type
     plt.figure(figsize=(15, 8))
-    query.select("beer_servings", "spirit_servings", "wine_servings").toPandas().boxplot()
+    query.select("beer_servings", 
+                 "spirit_servings", 
+                 "wine_servings").toPandas().boxplot()
     plt.title("Distribution of Alcohol Servings by Type")
     plt.ylabel("Servings per Capita")
     plt.suptitle("")
@@ -49,7 +51,9 @@ def viz():
     # Bar Chart: Total Litres of Alcohol by Country (Top 10)
     top_countries = query.limit(10).toPandas()
     plt.figure(figsize=(12, 6))
-    plt.bar(top_countries["country"], top_countries["total_litres_of_pure_alcohol"], color="orange")
+    plt.bar(top_countries["country"], 
+            top_countries["total_litres_of_pure_alcohol"], 
+            color="orange")
     plt.xlabel("Country")
     plt.ylabel("Total Litres of Pure Alcohol")
     plt.title("Top 10 Countries by Total Alcohol Consumption")
